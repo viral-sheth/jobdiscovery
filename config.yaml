@@ -1,0 +1,135 @@
+# Job Discovery Agent configuration
+
+# Role keywords to search for (matched against job titles for ATS boards,
+# used as search queries for Adzuna)
+keywords:
+  - data engineer
+  - data analyst
+  - business intelligence analyst
+  - bi engineer
+  - bi analyst
+  - analytics engineer
+  - ai engineer
+  - machine learning engineer
+  - ml engineer
+  - software engineer
+
+location: United States
+max_age_hours: 24
+
+# Jobs whose title contains any of these words (word-boundary match,
+# case-insensitive) are excluded — keeps results entry/mid-level.
+exclude_title_terms:
+  - senior
+  - sr
+  - staff
+  - principal
+  - lead
+  - director
+  - manager
+  - head
+  - vp
+  - avp
+  - vice president
+
+sponsorship:
+  # If the description contains any of these -> "Sponsor-friendly"
+  positive:
+    - opt
+    - stem opt
+    - cpt
+    - visa
+    - sponsorship
+    - work authorization
+    - will sponsor
+    - h-1b
+    - h1b
+  # If the description contains any of these -> "Likely no sponsor"
+  # (negative signals win when both are present)
+  negative:
+    - us citizen only
+    - u.s. citizen only
+    - us citizens only
+    - u.s. citizens only
+    - citizenship required
+    - security clearance
+    - no sponsorship
+    - not offer sponsorship
+    - unable to sponsor
+    - not able to sponsor
+    - cannot sponsor
+    - will not sponsor
+    - without sponsorship
+    - not provide sponsorship
+    - not sponsor
+
+adzuna:
+  enabled: true
+  country: us
+  results_per_page: 50
+  max_pages_per_keyword: 1
+  # Follow Adzuna redirect links to discover the real apply URL / ATS.
+  # Disabled: Adzuna blocks scripted access to its redirect pages, so this
+  # only slows the run down (~1s per job) without improving detection.
+  resolve_redirects: false
+
+# Company job boards polled directly via their public, no-auth JSON APIs.
+# Add/remove company slugs freely — a bad slug is skipped with a warning.
+# Greenhouse slug: boards.greenhouse.io/<slug>
+# Lever slug:      jobs.lever.co/<slug>
+# Ashby slug:      jobs.ashbyhq.com/<slug>
+# An entry can be a plain slug, or `slug: Display Name` to control how the
+# company name appears in Telegram messages.
+ats_boards:
+  enabled: true
+  greenhouse:
+    - stripe
+    - airbnb
+    - dropbox
+    - databricks
+    - datadog
+    - doordashusa
+    - robinhood
+    - instacart
+    - coinbase
+    - gusto
+    - affirm
+    - pinterest
+    - reddit
+    - lyft
+    - twilio
+    - asana
+    - figma
+    - brex
+    - cloudflare
+    - mongodb
+    - okta
+    - anthropic
+    - scaleai
+    - vercel
+    - samsara
+    - flexport
+    - attentive
+    - chime
+    - andurilindustries
+  lever:
+    - palantir
+    - zoox
+    - kraken123: Kraken
+  ashby:
+    - openai: OpenAI
+    - ramp
+    - linear
+    - notion
+    - replit
+    - voleon
+    - cursor
+    - sierra
+    - supabase
+
+telegram:
+  # Safety valve so a first run with hundreds of jobs doesn't flood the chat.
+  # Jobs beyond the cap are still marked seen; a trailing note reports the count.
+  max_jobs_per_digest: 40
+
+database_path: jobs.db
